@@ -1,20 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="version" content="from-s3" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sefhold.com</title>
-    <script type="module" crossorigin src="/assets/index.4edf6046.js"></script>
-    <link rel="stylesheet" href="/assets/index.ff332175.css" />
+    <meta name="theme-color" content="#312742" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="assets/background.webp" type="image/webp" />
+    <style>
+      /*
+       * Parallax desert scene. Every vertical size is in cqh (1% of the scene
+       * height) so the composition scales with the viewport height; portrait
+       * screens show a centre crop of the same scene. Values reproduce the
+       * original design 1:1 at 1440x900.
+       */
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #312742;
+      }
+
+      .scene {
+        position: relative;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        container-type: size;
+      }
+
+      .sky,
+      .layer {
+        position: absolute;
+        inset: 0;
+      }
+
+      .sky {
+        background: #312742 url("assets/background.webp") center top / max(100%, 160cqh) auto repeat-x;
+      }
+
+      /* Each layer drifts two scene widths per cycle; nearer layers move faster. */
+      .layer {
+        animation: drift linear infinite;
+        will-change: transform;
+      }
+      .layer--far {
+        animation-duration: 864s;
+      }
+      .layer--mid {
+        animation-duration: 288s;
+      }
+      .layer--near {
+        animation-duration: 86.4s;
+      }
+      .layer--front {
+        animation-duration: 28.8s;
+      }
+
+      @keyframes drift {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      .mountains {
+        position: absolute;
+        top: 18.444cqh;
+        left: -150%;
+        width: 400%;
+        height: 85.111cqh;
+        background: 0 0 / auto 100% repeat-x;
+      }
+      .mountains--middle {
+        background-image: url("assets/mountains-middle.webp");
+      }
+      .mountains--front {
+        background-image: url("assets/mountains-front.webp");
+      }
+
+      .layer img {
+        position: absolute;
+        height: auto;
+        transform: translate(-50%, -50%);
+      }
+      .giraffe {
+        top: 90cqh;
+        left: 10%;
+        width: 8.889cqh;
+      }
+      .tree {
+        top: 90cqh;
+        left: 75%;
+        width: 27.778cqh;
+      }
+      .clouds {
+        top: 25cqh;
+        left: -50%;
+        width: 236.667cqh;
+      }
+
+      .banner {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: #312742;
+        color: #f2b749;
+        text-align: center;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .banner h1 {
+        margin: 0.3rem;
+        font-size: 1.5rem;
+        font-weight: 300;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .layer {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="rb-app"></div>
-    <script
-      src="//app.storyblok.com/f/storyblok-v2-latest.js"
-      type="text/javascript"
-      async
-    ></script>
+    <main class="scene">
+      <div class="sky"></div>
+      <div class="layer layer--far" aria-hidden="true">
+        <div class="mountains mountains--middle"></div>
+      </div>
+      <div class="layer layer--mid" aria-hidden="true">
+        <div class="mountains mountains--front"></div>
+      </div>
+      <div class="layer layer--near" aria-hidden="true">
+        <img class="giraffe" src="assets/giraffe.svg" alt="" />
+      </div>
+      <div class="layer layer--front" aria-hidden="true">
+        <img class="tree" src="assets/tree.svg" alt="" />
+        <img class="clouds" src="assets/clouds.webp" alt="" />
+      </div>
+      <div class="banner"><h1>SEFHOLD</h1></div>
+    </main>
   </body>
 </html>
